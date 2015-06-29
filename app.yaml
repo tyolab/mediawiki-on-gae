@@ -1,0 +1,126 @@
+application: mediawiki-on-gae
+version: mediawiki-on-gae-v1
+runtime: php55
+api_version: 1
+
+handlers:
+# Static pages
+- url: /wiki/(.*\.(htm$|html$|css$|js$))
+  static_files: wiki/\1
+  upload: wiki/(.*\.(htm$|html$|css$|js$))
+  application_readable: true
+
+# Serve images as static resources.
+- url: /wiki/resources/(.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg))$
+  static_files: wiki/resources/\1
+  upload: wiki/resources/.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg)
+  application_readable: true
+  
+  # Serve images as static resources.
+- url: /wiki/vendor/(.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg))$
+  static_files: wiki/vendor/\1
+  upload: wiki/vendor/.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg)
+  application_readable: true
+  
+  # Serve images as static resources.
+- url: /wiki/skins/(.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg))$
+  static_files: wiki/skins/\1
+  upload: wiki/skins/.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg)
+  application_readable: true
+  
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico
+  application_readable: true
+  
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+  application_readable: true
+
+# Misc files.
+- url: /(.+\.(xsd|txt|))$
+  static_files: wiki/\1
+  upload: wiki/.+\.(xsd|txt)
+  application_readable: true
+  
+- url: /wiki/mw-config/
+  script: wiki/mw-config/index.php
+  secure: always
+  
+# Serve images from Google Cloud Storage 
+- url: /wiki/images/(.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg))$
+  script: wiki/extensions/CloudStorage/GoogleCloudStorageFileServe.php
+  secure: optional
+  
+# Serve php5 scripts.
+- url: /wiki/(.+\.php5)$
+  script: wiki/\1
+
+# Serve php scripts.
+- url: /wiki/(.+\.php)$
+  script: wiki/\1
+ 
+# 
+- url: (.*)/(w|W)iki/(.*)
+  script: wiki/index.php
+  secure: optional
+  
+# redirect root to wiki path
+- url: /?$
+  script: wiki/index.php
+  secure: optional
+  
+# 404 
+- url: /(.*)$
+#  script: /wiki/Special:Error404
+#  
+#- url: /wiki/Special:Error404
+  script: wiki/index.php
+  
+skip_files:
+- ^(.*/)?\.zip$
+- ^(.*/)?\.bat$
+- ^(.*/)?\.sh$
+- ^(.*/)?\.md$
+- ^(.*/)?\.htaccess$
+- ^(.*/)?\.sample$
+- ^(.*/)?README$
+- ^(.*/)?COPYING$
+- ^(.*/)?.git
+- wiki/tests
+- wiki/skins/Modern
+- wiki/skins/MonoBook
+- wiki/skins/CologneBlue
+- wiki/docs
+#- wiki/extensions/Cite
+- wiki/extensions/CiteThisPage
+- wiki/extensions/ConfirmEdit
+- wiki/extensions/Gadgets
+- wiki/extensions/ImageMap
+- wiki/extensions/InputBox
+- wiki/extensions/Interwiki
+- wiki/extensions/LocalisationUpdate
+- wiki/extensions/Nuke
+- wiki/extensions/ParserFunctions
+- wiki/extensions/PdfHandler
+- wiki/extensions/Poem
+- wiki/extensions/README
+- wiki/extensions/Renameuser
+- wiki/extensions/SpamBlacklist
+#- wiki/extensions/SyntaxHighlight_GeSHi
+- wiki/extensions/TitleBlacklist
+#- wiki/extensions/WikiEditor
+#- wiki/extensions/Special404
+- wiki/serialized
+- wiki/COPYING
+- wiki/CREDITS
+- wiki/FAQ
+- wiki/HISTORY
+- wiki/INSTALL
+- wiki/README(.*)
+- wiki/UPGRADE
+- wiki/Gemfile.lock
+#- wiki/mw-config
+- wiki/images/*
+- wiki/maintenance
