@@ -21,7 +21,7 @@ $wgUseCurlHttpEngine = false;
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
 
-$wgSitename = "Xxxpeida";
+$wgSitename = "MediaWiki On GAE";
 $wgMetaNamespace = "wiki";
 
 ## The URL base path to the directory containing the wiki;
@@ -39,7 +39,7 @@ $wgScriptExtension = ".php";
 $wgRunOnGae = false;
 if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false) {
   $wgRunOnGae = true;
-  $wgServer = "//www.wiki.org";
+  $wgServer = "//mediawiki-on-gae.appspot.com";
   $wgArticlePath = "$wgScriptPath/$1";
 }else{
   $wgServer = "http://localhost:8080";
@@ -51,14 +51,13 @@ $wgStylePath = "$wgScriptPath/skins";
 ## The relative URL path to the logo.  Make sure you change this from the default,
 ## or else you'll overwrite your logo when you upgrade!
 #$wgLogo = "$wgStylePath/common/images/wiki.png";
-$wgLogo = '/wiki/skins/common/images/wiki.png';
 ## UPO means: this is also a user preference option
 
 $wgEnableEmail = true;
 $wgEnableUserEmail = true; # UPO
 
-$wgEmergencyContact = "admin@xxxpedid.org";
-$wgPasswordSender = "admin@xxxpedid.org";
+$wgEmergencyContact = "support@tyo.com.au";
+$wgPasswordSender = "support@tyo.com.au";
 
 $wgEnotifUserTalk = false; # UPO
 $wgEnotifWatchlist = true; # UPO
@@ -77,8 +76,8 @@ if($wgRunOnGae) {
 } 
 else {
   $wgDBserver = 'localhost'; // "173.194.227.63"; // 
-  $wgDBuser = "wiki_db_user";
-  $wgDBpassword = "%Ned#@coMpl12&7";
+  $wgDBuser = "root";
+  $wgDBpassword = "";
 }
 
 $wgDBname = "wiki";
