@@ -39,14 +39,22 @@ handlers:
   application_readable: true
 
 # Misc files.
-- url: /(.+\.(xsd|txt|))$
+- url: /(.+\.(xsd|txt|sql|))$
   static_files: wiki/\1
-  upload: wiki/.+\.(xsd|txt)
+  upload: wiki/.+\.(xsd|txt|sql)
   application_readable: true
   
+# Serve MediaWiki installation scripts
+# can be removed after installation
 - url: /wiki/mw-config/
   script: wiki/mw-config/index.php
   secure: always
+  
+# Serve mw-config images as static resources.
+- url: /wiki/mw-config/images/(.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg))$
+  static_files: wiki/mw-config/images/\1
+  upload: wiki/mw-config/images/.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg)
+  application_readable: true
   
 # Serve images from Google Cloud Storage 
 - url: /wiki/images/(.*\.(ico|jpg|jpeg|png|gif|woff|ttf|otf|eot|svg))$
@@ -123,4 +131,4 @@ skip_files:
 - wiki/Gemfile.lock
 #- wiki/mw-config
 - wiki/images/*
-- wiki/maintenance
+#- wiki/maintenance
