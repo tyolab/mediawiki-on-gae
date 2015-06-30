@@ -65,7 +65,8 @@ abstract class DatabaseMysqlBase extends DatabaseBase {
 		} else {
 			$realServer = $server;
 		}
-		$this->close();
+		if ($this->isOpen())
+			$this->close();
 		$this->mServer = $server;
 		$this->mUser = $user;
 		$this->mPassword = $password;

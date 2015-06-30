@@ -80,13 +80,13 @@ class DatabaseMysql extends DatabaseMysqlBase {
 			
 			if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false) {
 				global $wgGaeAppId, $wgGaeInstanceName;
-				$conn = mysql_connect(':'.'/cloudsql/'.$wgGaeAppId.':'.$wgGaeInstanceName,
-				  'root', // username
-				  ''      // password
+				$connStr = $wgGaeInstanceName ? (':/cloudsql/' . $wgGaeInstanceName) : $realServer;
+				$conn = mysql_connect($connStr,
+				  $this->mUser, // username
+				  $this->mPassword      // password
 				  );
 			}
 			else {
-// 				$conn = mysql_connect(':/cloudsql/mediawiki-on-gae:wiki',
 				if ( $this->mFlags & DBO_PERSISTENT ) {
 					$conn = mysql_pconnect( $realServer, $this->mUser, $this->mPassword, $connFlags );
 				} else {
