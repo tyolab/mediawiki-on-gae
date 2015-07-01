@@ -29,6 +29,8 @@
  *
  * @file
  */
+ini_set('session.cookie_lifetime', 2000000);
+ini_set ( 'max_execution_time', 2000000);
 
 // Bail on old versions of PHP, or if composer has not been run yet to install
 // dependencies. Using dirname( __FILE__ ) here because __DIR__ is PHP5.3+.

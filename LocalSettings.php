@@ -80,7 +80,7 @@ else {
   $wgDBpassword = "";
 }
 
-$wgDBname = "wiki";
+$wgDBname = "wiki_db";
 
 # MySQL specific settings
 $wgDBprefix = "";
@@ -111,6 +111,8 @@ $wgAllowCopyUploads = true;   // allow URL upload
 $wgCopyUploadsFromSpecialUpload = true;
 $wgGroupPermissions['user']['upload_by_url'] = true;
 $wgFileExtensions[] = 'gz';
+$wgFileExtensions[] = 'php';
+$wgStrictFileExtensions = false;
 
 # allow custom page title using magic word {{DISPLAYTITLE:XXXXX}}
 $wgAllowDisplayTitle = true;
