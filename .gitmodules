@@ -1,0 +1,3 @@
+[submodule "CloudStorage"]
+	path = wiki/extensions/CloudStorage/
+	url = https://github.com/tyolab/CloudStorage.git
