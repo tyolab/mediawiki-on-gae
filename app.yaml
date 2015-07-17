@@ -128,6 +128,7 @@ skip_files:
 - wiki/INSTALL
 - wiki/README(.*)
 - wiki/UPGRADE
+- wiki/.*tests.*
 - wiki/Gemfile.lock
 #- wiki/mw-config
 - wiki/images/*

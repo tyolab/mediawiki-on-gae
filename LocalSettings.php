@@ -21,7 +21,7 @@ $wgUseCurlHttpEngine = false;
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
 
-$wgSitename = "MediaWiki On GAE";
+$wgSitename = "TYO Lab Wiki";
 $wgMetaNamespace = "wiki";
 
 ## The URL base path to the directory containing the wiki;
@@ -39,7 +39,8 @@ $wgScriptExtension = ".php";
 $wgRunOnGae = false;
 if(isset($_SERVER['SERVER_SOFTWARE']) && strpos($_SERVER['SERVER_SOFTWARE'],'Google App Engine') !== false) {
   $wgRunOnGae = true;
-  $wgServer = "//mediawiki-on-gae.appspot.com";
+  #$wgServer = "//mediawiki-on-gae.appspot.com";
+  $wgServer = "//wiki.tyolab.com";
   $wgArticlePath = "$wgScriptPath/$1";
 }else{
   $wgServer = "http://localhost:8080";
@@ -98,7 +99,8 @@ $wgMemCachedServers = array();
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
 $wgEnableUploads = true;
-#$wgUseImageMagick = true; 7  	2`1 vcbqswdcdew2ws`134444htun #$wgImageMagickConvertCommand = "/usr/bin/convert";
+#$wgUseImageMagick = true;
+#$wgImageMagickConvertCommand = "/usr/bin/convert";
 
 # File Upload Settings
 # Don't generate thumbnail at the backend
@@ -217,4 +219,19 @@ require_once( "$IP/extensions/CloudStorage/CloudStorage.php" );
 require_once( "$IP/extensions/Special404/Special404.php" );
 require_once( "$IP/extensions/Cite/Cite.php" );
 require_once "$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php";
+
+## WikiEditor ##
+# Enables use of WikiEditor by default but still allow users to disable it in preferences
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+$wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
+
+# Displays the Preview and Changes tabs
+$wgDefaultUserOptions['wikieditor-preview'] = 1;
+
+# Displays the Publish and Cancel buttons on the top right side
+$wgDefaultUserOptions['wikieditor-publish'] = 1;
 require_once( "$IP/extensions/WikiEditor/WikiEditor.php" );
+
+
+require_once "$IP/extensions/GoogleAdSense/GoogleAdSense.php";
+

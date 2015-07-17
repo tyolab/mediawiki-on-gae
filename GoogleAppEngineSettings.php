@@ -1,4 +1,4 @@
 <?php
 
 $wgGaeAppId = 'mediawiki-on-gae';
-$wgGaeInstanceName = 'wiki';
+$wgGaeInstanceName = 'tyo-lab-databases:hosting1';
