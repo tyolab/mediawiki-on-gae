@@ -1,3 +1,6 @@
 [submodule "CloudStorage"]
 	path = wiki/extensions/CloudStorage/
 	url = https://github.com/tyolab/CloudStorage.git
+[submodule "wiki"]
+	path = wiki
+	url = git@github.com:tyolab/mediawiki-dist.git
