@@ -182,6 +182,7 @@ $wgGroupPermissions['*']['read'] = true;
 # End of automatically generated settings.
 # Add more configuration options below.
 
+$wgShowIPinHeader = false;
 
 # DEBUG
 if ($wgDebug) {
@@ -220,6 +221,23 @@ require_once( "$IP/extensions/Special404/Special404.php" );
 require_once( "$IP/extensions/Cite/Cite.php" );
 require_once "$IP/extensions/SyntaxHighlight_GeSHi/SyntaxHighlight_GeSHi.php";
 
+# Stop Spam
+require_once "$IP/extensions/SpamBlacklist/SpamBlacklist.php";
+$wgSpamBlacklistFiles = array(
+		"https://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1",
+		"https://en.wikipedia.org/w/index.php?title=MediaWiki:Spam-blacklist&action=raw&sb_ver=1"
+);
+
+require_once "$IP/extensions/ConfirmEdit/ConfirmEdit.php";
+require_once "$IP/extensions/ConfirmEdit/QuestyCaptcha.php";
+
+$wgCaptchaClass = 'QuestyCaptcha';
+
+// Add your questions in LocalSettings.php using this format
+#$wgCaptchaQuestions[] = array( 'question' => "A question?", 'answer' => "An Answer");
+#$wgCaptchaQuestions[] = array( 'question' => 'How much wood would a woodchuck chuck if a woodchuck could chuck wood?', 'answer' => 'as much wood as...' );
+$wgCaptchaQuestions[] = array( 'question' => "What is this wiki's name?", 'answer' => "$wgSitename" );
+
 ## WikiEditor ##
 # Enables use of WikiEditor by default but still allow users to disable it in preferences
 $wgDefaultUserOptions['usebetatoolbar'] = 1;
@@ -232,6 +250,10 @@ $wgDefaultUserOptions['wikieditor-preview'] = 1;
 $wgDefaultUserOptions['wikieditor-publish'] = 1;
 require_once( "$IP/extensions/WikiEditor/WikiEditor.php" );
 
+require_once("$IP/extensions/MobileFrontend/MobileFrontend.php");
+$wgMFAutodetectMobileView = true;
+
+require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php");
 
 require_once "$IP/extensions/GoogleAdSense/GoogleAdSense.php";
 
