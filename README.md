@@ -1,137 +1,36 @@
 # MediaWiki on App Engine Starter Project
 
-***Note: This repo is essentially the "source" of the starter projects, allowing you to browse our code, suggest changes, etc. We provide already-built-and-zipped MediaWiki projects for Windows, Mac, and Linux at [Quick Start MediaWiki for Google App Engine](http://googlecloudplatform.github.io/appengine-php-MediaWiki-starter-project/).***
+Run MediaWiki on Google App Engine
+Contents [hide] 
+1 WARNING
+2 Overview
+3 Installation
+4 See Also
+WARNING[edit]
+To run MediaWiki on Google App Engine (GAE), please make sure you have your LocalSettings.php file set properly before deploying the software to Google App Engine
+If you need Infobox template(s) which requires Scribunto extension to parse, Mediawiki on Google App Engine is not a good idea.
+Overview[edit]
+In short, you can't install MediaWiki via its own installer for initializing database and such on GAE because of one small thing - "max_execution_time". Google App Engine's max_execution_time is set to 30 seconds and unchangeable. However, running MediaWiki on GAE is still doable providing that the wiki database is initialized in the following methods:
 
-## Prerequisites
+running MediaWiki installer locally and set the database host to Google Cloud SQL
+import the database from the wiki database dump
+use mysql locally with host set to Google Cloud SQL
+use the import tool available directly from https://console.developers.google.com/project
+Installation[edit]
+Please follow the steps to install MediaWiki software (1.25.1):
 
-1. Install the [PHP SDK for Google App Engine](https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_PHP)
-2. Install [MySQL](http://dev.mysql.com/downloads/)
-3. [Sign up](http://cloud.google.com/console) for a Google Cloud Platform project, and
-set up a Cloud SQL instance, as described [here](https://developers.google.com/cloud-sql/docs/instances), and a
-Cloud Storage bucket, as described [here](https://developers.google.com/storage/docs/signup). You'll want to name
-your Cloud SQL instance "MediaWiki" to match the config files provided here. To keep costs down, we suggest signing up for a D0 instance with package billing. 
-4. Visit your project in the
-[Google Cloud Console](http://cloud.google.com/console), going to the App Engine section's **Application Settings**
-area, and make a note of the **Service Account Name** for your application, which has an e-mail address
-(e.g. `<PROJECT_ID>@appspot.gserviceaccount.com`). Then, visit the Cloud Storage section of your project,
-select the checkbox next to the bucket you created in step 3, click
-**Bucket Permissions**, and add your Service Account Name as a **User** account that has **Writer** permission.
+Get the MediaWiki On GAE source code
+git clone https://github.com/tyolab/mediawiki-on-gae.git
 
-## Cloning and setup
+Update the mediawiki-on-gae/LocalSettings.php file according to your own settings. Or you can read the sample LocalSettings.php code here.
 
-### Step 1: Clone
+After setting your LocalSettings.php properly, execute following scripts
+./cp_files_after_editing.sh
 
-Clone this git repo and its submodules by running the following commands:
+run the code locally (optional)
+./run.sh
 
-    git clone --recursive https://github.com/tyolab/mediawiki-on-gae.git
-    cd mediawiki-on-gae/
+deploy to Google App Engine
+./deploy.sh
 
-You now have a copy of [MediaWiki](http://MediaWiki.org/), and the
-[Cloud Storage extension for MediaWiki](https://github.com/tyolab/CloudStorage),.
-
-### Step 2: Edit the config files
-
-Edit `LocalSettings.php` and `app.yaml`, replacing `your-project-id`
-to match the Project ID (not the name) that was assigned to your
-Google Cloud Platform project.
-
-
-## Running MediaWiki locally
-
->First, edit [wp-config.php](https://github.com/GoogleCloudPlatform/appengine-php-MediaWiki-starter-project/edit/master/wp-config.php)
-  so that the local environment password for root is not literally the string "password" -- unless that's what you used
-  when setting up MySQL locally.
-
-Using MySQL's command line version, run `databasesetup.sql` to set up your local database. For a default installation (no root password)
-this would be:
-
-    mysql -u root < databasesetup.sql
-
-But really, all it's doing is running this line -- the MediaWiki installation script will do the heavy lifting
-when it comes to setting up your database.
-
-    CREATE DATABASE IF NOT EXISTS MediaWiki_db;
-
-To run MediaWiki locally on Windows and OS X, you can use the
-[Launcher](https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_PHP)
-by going to **File > Add Existing Project** or you can run one of the commands below.
-
-On Mac and Windows, the default is to use the PHP binaries bundled with the SDK:
-
-    $ APP_ENGINE_SDK_PATH/dev_appserver.py path_to_this_directory
-
-On Linux, or to use your own PHP binaries, use:
-
-    $ APP_ENGINE_SDK_PATH/dev_appserver.py --php_executable_path=PHP_CGI_EXECUTABLE_PATH path_to_this_directory
-
-Now, with App Engine running locally, visit `http://localhost:8080/wp-admin/install.php` in your browser and run
-the setup process, changing the port number from 8080 if you aren't using the default.
-Or, to install directly from the local root URL, define `WP_SITEURL` in your `wp-config.php`, e.g.:
-
-    define( 'WP_SITEURL', 'http://localhost:8080/');
-
-You should be able to log in, and confirm that your app is ready to deploy.
-
-### Deploy!
-
-If all looks good, you can upload your application using the Launcher or by using this command:
-
-    $ APP_ENGINE_SDK_PATH/appcfg.py update APPLICATION_DIRECTORY
-
-Just like you had to do with the local database, you'll need to set up the Cloud SQL instance. The SDK includes
-a tool for doing just that:
-
-    google_sql.py <PROJECT_ID>:wiki_db
-
-This launches a browser window that authorizes the `google_sql.py` tool to connect to your Cloud SQL instance.
-After clicking **Accept**, you can return to the command prompt, which has entered into the SQL command tool
-and is now connected to your instance. Next to `sql>`, enter this command:
-
-    CREATE DATABASE IF NOT EXISTS wiki_db;
-
-You should see that it inserted 1 row of data creating the database. You can now type `exit` -- we're done here.
-
-Now, just like you did when MediaWiki was running locally, you'll need to run the install script by visiting:
-
-    http://<PROJECT_ID>.appspot.com/wiki/
-
-Or, to install directly from the root URL, you can define WP_SITEURL in your `wp-config.php`, e.g.:
-
-    define( 'WP_SITEURL', 'http://<YOUR_PROJECT_ID>.appspot.com/');
-
-### Activating the plugins, configuring email, and hooking up MediaWiki to your Cloud Storage
-
-**The following steps should be performed on your hosted copy of MediaWiki on App Engine**
-
-#### Activating the plugins
-
-see MediaWiki/extensions
-
-#### Configuring email and hooking MediaWiki up to your Cloud Storage
-
-Now visit **Settings > App Engine**. Enable the App Engine mail service - this will use the App Engine Mail
-API to send notifications from MediaWiki. Optionally, enter a valid e-mail address that mail should be sent
-from (if you leave this blank, the plugin will determine a default address to use). The address of the account
-you used to the create the Cloud Console project should work.
-
-Stay on this page, because in order to be able to embed images and other multimedia in your MediaWiki content,
-you need to enter the name of the Cloud Storage bucket you created when going through all the Prequisites earlier
-under **Upload Settings**.
-
-Hit **Save Changes** to commit everything.
-
-## That's all! (PHEW)
-
-Congratulations! You should now have a blog that loads rapidly, caches elegantly,
-sends email properly, and can support adding images and other media to blog posts! Most importantly,
-it will take advantage of Google's incredibly powerful infrastructure and scale gracefully to
-accomodate traffic that is hitting your blog.
-
-### Maintaining
-
-You'll want to keep your local copy of the application handy because that's how you install other plugins and update
-the ones that are packaged with this project. Due to the tight security of the
-App Engine sandbox, you can't directly write to files in the application area -- they're static. That's
-also why we hooked your uploads up to Cloud Storage. So, to install plugins, you log into the admin area
-of your local MediaWiki instance, install or update any plugins you want there, and
-redeploy. Then go into the admin area for your hosted MediaWiki instance to activate the plugins.
+If you want to store files (particularly images) on Google Cloud Storage, please see how to enable MediaWiki's CloudStorage Extension.
